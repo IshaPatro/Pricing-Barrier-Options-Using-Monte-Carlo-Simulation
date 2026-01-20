@@ -42,13 +42,10 @@ Barrier options are **path-dependent exotic derivatives** widely used in FX, equ
 
 ### Underlying Dynamics
 
-The underlying asset follows Geometric Brownian Motion under the risk-neutral measure:
-
-dS = r * S * dt + sigma * S * dW
-
-- Constant volatility and interest rate  
-- Lognormal price dynamics  
-- Risk-neutral drift to prevent arbitrage  
+- Asset prices follow a continuous-time stochastic process  
+- Risk-neutral drift ensures no-arbitrage pricing  
+- Prices remain strictly positive  
+- Volatility and interest rates are constant  
 
 ---
 
@@ -59,9 +56,9 @@ dS = r * S * dt + sigma * S * dW
 | Initial Price (S0) | 620 |
 | Strike (K) | 630 |
 | Maturity (T) | 0.5 years |
-| Volatility (sigma) | 25% |
-| Risk-Free Rate (r) | 3% |
-| Barrier (B) | 0.85 * S0 (down) / 1.15 * S0 (up) |
+| Volatility | 25% |
+| Risk-Free Rate | 3% |
+| Barrier (B) | 0.85 × S0 (down) / 1.15 × S0 (up) |
 
 ---
 
@@ -70,12 +67,9 @@ dS = r * S * dt + sigma * S * dW
 - Daily time discretization (252 trading days per year)  
 - Full price path simulation under GBM  
 - Barrier monitored at every time step  
-- Vanilla payoff computed at maturity  
+- Payoff evaluated at maturity  
 - Knock-in / knock-out logic applied  
-
-Option price is computed as:
-
-Price = exp(-r * T) * average(payoff)
+- Option price computed as the discounted average payoff  
 
 ---
 
@@ -84,7 +78,7 @@ Price = exp(-r * T) * average(payoff)
 - Simulated price paths with barrier overlays  
 - Clear distinction between surviving and knocked paths  
 - Convergence analysis across increasing path counts  
-- Standard error decreases at rate O(1 / sqrt(N))  
+- Standard error decreases as the number of paths increases  
 
 ---
 
@@ -113,6 +107,6 @@ Monte Carlo simulation provides a flexible and intuitive framework for pricing p
 
 - Brownian bridge correction for barrier bias  
 - Variance reduction techniques  
-- Stochastic volatility (Heston)  
-- Jump-diffusion models  
-- Closed-form validation (Reiner–Rubinstein)  
+- Stochastic volatility models  
+- Jump-diffusion dynamics  
+- Closed-form validation against analytical results  
