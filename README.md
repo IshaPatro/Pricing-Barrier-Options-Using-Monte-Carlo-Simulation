@@ -1,4 +1,4 @@
-# 📉 Monte Carlo Pricing of European Barrier Options
+# Monte Carlo Pricing of European Barrier Options
 
 ## Overview
 
@@ -10,8 +10,8 @@ Barrier options are **path-dependent exotic derivatives** widely used in FX, equ
 
 ## Objective
 
-- Price a **European Down-and-Out Call** via Monte Carlo  
-- Generalize to all barrier variants  
+- Price a European Down-and-Out Call using Monte Carlo simulation  
+- Support Up/Down barriers and Knock-In / Knock-Out structures  
 - Visualize path dependency and barrier interaction  
 - Analyze convergence and Monte Carlo error  
 
@@ -21,7 +21,7 @@ Barrier options are **path-dependent exotic derivatives** widely used in FX, equ
 
 ### Knock-Out Options
 - Option ceases to exist if the barrier is touched  
-- Lower cost, higher path risk  
+- Lower premium, higher path risk  
 
 ### Knock-In Options
 - Option activates only after the barrier is touched  
@@ -30,7 +30,7 @@ Barrier options are **path-dependent exotic derivatives** widely used in FX, equ
 ### Directional Variants (Call Options)
 
 | Type | Market View |
-|----|----|
+|------|-------------|
 | Up-and-Out | Bullish but capped |
 | Down-and-Out | Bullish, confident no crash |
 | Up-and-In | Bullish breakout |
@@ -42,41 +42,40 @@ Barrier options are **path-dependent exotic derivatives** widely used in FX, equ
 
 ### Underlying Dynamics
 
-The underlying asset follows GBM under the risk-neutral measure:
+The underlying asset follows Geometric Brownian Motion under the risk-neutral measure:
 
-\[
-dS_t = r S_t dt + \sigma S_t dW_t
-\]
+dS = r * S * dt + sigma * S * dW
 
 - Constant volatility and interest rate  
 - Lognormal price dynamics  
-- No arbitrage under risk-neutral pricing  
+- Risk-neutral drift to prevent arbitrage  
+
+---
 
 ### Model Parameters
 
 | Parameter | Value |
-|----|----|
-| Initial Price \(S_0\) | 620 |
-| Strike \(K\) | 630 |
-| Maturity \(T\) | 0.5 years |
-| Volatility \(\sigma\) | 25% |
-| Risk-Free Rate \(r\) | 3% |
-| Barrier \(B\) | \(0.85S_0\) (down) / \(1.15S_0\) (up) |
+|----------|-------|
+| Initial Price (S0) | 620 |
+| Strike (K) | 630 |
+| Maturity (T) | 0.5 years |
+| Volatility (sigma) | 25% |
+| Risk-Free Rate (r) | 3% |
+| Barrier (B) | 0.85 * S0 (down) / 1.15 * S0 (up) |
 
 ---
 
 ## Monte Carlo Methodology
 
-- Daily time discretization (252 trading days/year)  
-- Full path simulation under GBM  
+- Daily time discretization (252 trading days per year)  
+- Full price path simulation under GBM  
 - Barrier monitored at every time step  
 - Vanilla payoff computed at maturity  
 - Knock-in / knock-out logic applied  
-- Discounted expected payoff:
 
-\[
-\text{Price} = e^{-rT}\mathbb{E}[\text{Payoff}]
-\]
+Option price is computed as:
+
+Price = exp(-r * T) * average(payoff)
 
 ---
 
@@ -85,7 +84,7 @@ dS_t = r S_t dt + \sigma S_t dW_t
 - Simulated price paths with barrier overlays  
 - Clear distinction between surviving and knocked paths  
 - Convergence analysis across increasing path counts  
-- Standard error confirms \(O(1/\sqrt{N})\) Monte Carlo convergence  
+- Standard error decreases at rate O(1 / sqrt(N))  
 
 ---
 
@@ -97,7 +96,7 @@ dS_t = r S_t dt + \sigma S_t dW_t
 - Efficient risk structuring  
 
 ### Limitations
-- Residual Monte Carlo error  
+- Monte Carlo sampling error  
 - Discrete barrier monitoring bias  
 - Constant volatility assumption  
 - No jumps or stochastic volatility  
@@ -106,13 +105,13 @@ dS_t = r S_t dt + \sigma S_t dW_t
 
 ## Key Takeaway
 
-Monte Carlo simulation provides a **flexible and intuitive framework** for pricing path-dependent derivatives like barrier options, while clearly highlighting numerical and modeling trade-offs.
+Monte Carlo simulation provides a flexible and intuitive framework for pricing path-dependent derivatives like barrier options, while clearly highlighting numerical and modeling trade-offs.
 
 ---
 
 ## Possible Extensions
 
-- Brownian bridge barrier correction  
+- Brownian bridge correction for barrier bias  
 - Variance reduction techniques  
 - Stochastic volatility (Heston)  
 - Jump-diffusion models  
